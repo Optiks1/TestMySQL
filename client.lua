@@ -83,7 +83,7 @@ function showWindow()
 		end
 	--end
 end
-bindKey("F2","down",showWindow)
+bindKey("L","down",showWindow)
 
 function dgsGridListGetSelectedItemText(gridList,column)
     local item = dgsGridListGetSelectedItem(gridList)
