@@ -1,5 +1,15 @@
 loadstring(exports.dgs:dgsImportFunction())()-- load functions
 local screenW,screenH = dgsGetScreenSize()
+
+window2 = dgsCreateWindow((screenW-700)/2,(screenH-700)/2,700,700,"Вы уверены в удалении?",false,0xFFE0E0E0,28,nil,0xFF202020,nil,0xFF101010,5,true)
+dgsWindowSetSizable(window2,false)
+dgsSetVisible(window2,false)
+
+button5 = dgsCreateButton(10,35,330,50,"Да",false,window2,0xFFE0E0E0,1,1,nil,nil,nil,0xFF181818,0xFF303030,0xFFA00000)
+dgsSetProperty(button5,"font",font)
+button6 = dgsCreateButton(360,35,330,50,"Нет",false,window2,0xFFE0E0E0,1,1,nil,nil,nil,0xFF181818,0xFF303030,0xFFA00000)
+dgsSetProperty(button6,"font",font)
+
 window = dgsCreateWindow((screenW-700)/2,(screenH-700)/2,700,700,"Интерфейс пользователей",false,0xFFE0E0E0,28,nil,0xFF202020,nil,0xFF101010,5,true)
 dgsWindowSetSizable(window,false)
 dgsSetVisible(window,false)
@@ -28,6 +38,7 @@ grid2column1 = dgsGridListAddColumn(grid2,"Имя",0.3)
 grid2column2 = dgsGridListAddColumn(grid2,"Фамилия",0.3)
 grid2column3 = dgsGridListAddColumn(grid2,"Адрес",0.3)
 text1 = dgsCreateLabel(351,128,339,24,"Поле поиска пользователя",false,window)
+
 
 dgsLabelSetHorizontalAlign(text1,"center",false)
 dgsLabelSetVerticalAlign(text1,"center")
@@ -72,7 +83,7 @@ function showWindow()
 		end
 	--end
 end
-bindKey("L","down",showWindow)
+bindKey("F2","down",showWindow)
 
 function dgsGridListGetSelectedItemText(gridList,column)
     local item = dgsGridListGetSelectedItem(gridList)
@@ -83,7 +94,6 @@ function dgsGridListGetSelectedItemText(gridList,column)
 end
 
 function click(button,state)
-	print('clickkkk')
 	if source == button1 then
 		local name1 = dgsGetText(edit1)
 		local name2 = dgsGetText(edit2)
@@ -104,13 +114,9 @@ function click(button,state)
 			dB(source)
 		end
 	elseif source == button3 then
-		local name1 = dgsGridListGetSelectedItemText(grid2,grid2column1)
-		local name2 = dgsGridListGetSelectedItemText(grid2,grid2column2)
-		local adres = dgsGridListGetSelectedItemText(grid2,grid2column3)
-		if name1 and name2 and adres and name1 ~= nil and name2 ~= nil and adres ~= nil and name1 ~= "" and name2 ~= "" and adres ~= "" then
-			triggerServerEvent("deletePlayer",lp(),lp(),name1,name2,adres)
-			dB(source)
-			dgsGridListClear(grid2)
+		if dgsGridListGetSelectedItem(grid2) ~= -1 then
+			dgsSetVisible(window2,true)
+			dgsSetVisible(window,false)
 		end
 	elseif source == button4 then
 		local name1 = dgsGetText(edit7)
@@ -120,10 +126,25 @@ function click(button,state)
 		if name1 and name2 and adres and name1 ~= nil and name2 ~= nil and adres ~= nil and name1 ~= "" or name2 ~= "" or adres ~= "" then
 			triggerServerEvent("searchPlayer",lp(),lp(),name1,name2,adres)
 			dB(source)
+			dB(button5)
 		end
+	elseif source == button5 then
+		dgsSetVisible(window2,false)
+		dgsSetVisible(window,true)
+		local name1 = dgsGridListGetSelectedItemText(grid2,grid2column1)
+		local name2 = dgsGridListGetSelectedItemText(grid2,grid2column2)
+		local adres = dgsGridListGetSelectedItemText(grid2,grid2column3)
+		if name1 and name2 and adres and name1 ~= nil and name2 ~= nil and adres ~= nil and name1 ~= "" and name2 ~= "" and adres ~= "" then
+			triggerServerEvent("deletePlayer",lp(),lp(),name1,name2,adres)
+			dB(source)
+			dgsGridListClear(grid2)
+		end
+	elseif source == button6 then
+		dgsSetVisible(window2,false)
+		dgsSetVisible(window,true)
 	end
 end
-addEventHandler("onDgsMouseClickUp", getRootElement(),click)
+addEventHandler("onDgsMouseClickUp",getRootElement(),click)
 
 addEvent("updateGrid2List",true)
 function updateGrid2List(data)
