@@ -1,0 +1,6 @@
+<meta>
+	<info name="TestMySQL" description="add,edit,delete from MySQL datas." author="Optik" type="script" version="1.0"/>
+	<script src="client.lua" type="client" cache="false"/>
+	<file src="assets/font.ttf" type="client" cache="false"/>
+	<script src="server.lua" type="server" cache="false"/>
+</meta>
