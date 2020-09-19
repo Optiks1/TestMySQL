@@ -122,7 +122,6 @@ function click(button,state)
 		local name1 = dgsGetText(edit7)
 		local name2 = dgsGetText(edit8)
 		local adres = dgsGetText(edit9)
-		outputChatBox(name1.." "..name2.." "..adres)
 		if name1 and name2 and adres and name1 ~= nil and name2 ~= nil and adres ~= nil and name1 ~= "" or name2 ~= "" or adres ~= "" then
 			triggerServerEvent("searchPlayer",lp(),lp(),name1,name2,adres)
 			dB(source)
